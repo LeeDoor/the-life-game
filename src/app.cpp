@@ -20,10 +20,10 @@ void App::Start(){
 void App::Update(){
     while (!glfwWindowShouldClose(window))
     {
+        glClearColor(BG_C, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-
+        grid.draw();
         glfwSwapBuffers(window);
-
         glfwPollEvents();
     }
 }
