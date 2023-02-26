@@ -1,0 +1,4 @@
+enum GameStates {
+    Draw,
+    Evolution
+};

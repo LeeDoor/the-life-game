@@ -1,14 +1,18 @@
 #include "app.hpp"
 #include <iostream>
 
-static void cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
+void cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
 {
-    //std::cout << xpos << " " << ypos << std::endl;
+    App::onMouseHover(xpos, ypos);
 }
-static void window_size_callback(GLFWwindow* window, int width, int height)
+void window_size_callback(GLFWwindow* window, int width, int height)
 {
     glViewport(0, 0, width, height);
 }
+
+GLFWwindow* App::window;
+Grid App::grid;
+GameStates App::gameState = GameStates::Draw;
 
 void App::Start(){
     if (!glfwInit())
@@ -37,4 +41,15 @@ void App::Update(){
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
+}
+
+void App::onMouseHover(int x, int y){
+    if(gameState == GameStates::Evolution)return;
+    int w, h;
+    glfwGetWindowSize(window, &w, &h);
+    
+    int numX = x / (w / (float)GRID_W);
+    int numY = GRID_H - y / (h / (float)GRID_H);
+
+    grid.setSelected(numX, numY);
 }

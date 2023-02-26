@@ -3,7 +3,7 @@
 
 Grid::Grid(){
     for(int i = 0; i < GRID_W; ++i) {
-        grid[i].fill(i%2);
+        grid[i].fill(0);
     }
 }
 
@@ -22,8 +22,10 @@ void Grid::draw(){
     for(int x = 0; x < GRID_W; ++x){
         drawCol(x);
     }
-
     glEnd();
+
+    drawSelected();
+
     glPopMatrix();
 }
 void Grid::drawCol(int x) {
@@ -41,4 +43,25 @@ void Grid::drawCell(int x, int y) {
     glVertex2f(cellSize * x + cellSize, cellSize * y);
     glVertex2f(cellSize * x + cellSize, cellSize * y + cellSize);
     glVertex2f(cellSize * x, cellSize * y + cellSize);
+}
+
+void Grid::setSelected(int x, int y) {
+    selectedX = x;
+    selectedY = y;
+}
+
+void Grid::drawSelected() {
+    if(selectedX == -1)
+        return;
+    glBegin(GL_LINE_LOOP);
+
+    glLineWidth(SEL_LINE_WIDTH);
+    glColor3f(SELECTED_C);
+
+    glVertex2f(cellSize * selectedX, cellSize * selectedY);
+    glVertex2f(cellSize * selectedX + cellSize, cellSize * selectedY);
+    glVertex2f(cellSize * selectedX + cellSize, cellSize * selectedY + cellSize);
+    glVertex2f(cellSize * selectedX, cellSize * selectedY + cellSize);
+
+    glEnd();
 }
