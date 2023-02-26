@@ -6,7 +6,7 @@ class App {
 private:
     GLFWwindow* window;
     Grid grid;
-    
+    //void windowSizeCallback(GLFWwindow* window, int width, int height);
     void Update();
 public:
     void Start();

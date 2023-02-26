@@ -3,12 +3,10 @@
 
 Grid::Grid(){
     for(int i = 0; i < GRID_W; ++i) {
-        grid[i].fill(false);
+        grid[i].fill(i%2);
     }
-    grid[0][0] = true;
-    grid[0][1] = true;
-    grid[0][2] = true;
 }
+
 
 std::array<bool, GRID_H>& Grid::operator [](int id){
     return grid[id];
