@@ -70,3 +70,12 @@ void Grid::select(){
     if(selectedX != UNSELECTED)
         grid[selectedX][selectedY] = !grid[selectedX][selectedY];
 }
+
+bool Grid::cycle(){
+    for(int x = 0; x < GRID_W; ++x){
+        for(int y = 0; y < GRID_H; ++y){
+            grid[x][y] = !grid[x][y];
+        }
+    }
+    return true;
+}

@@ -20,4 +20,5 @@ public:
     void draw();
     void select();
     void setSelected(int x, int y);
+    bool cycle();
 };

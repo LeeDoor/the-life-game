@@ -9,10 +9,12 @@ private:
     static GLFWwindow* window;
     static Grid grid;
     static GameStates gameState;
+    static double startCycle;
 
     static void update();
 public:
     static void start();
     static void onMouseHover(int x, int y);
-    static void onMouseLMB();
+    static void drawOnGrid();
+    static void changeGameMode();
 };

@@ -12,12 +12,18 @@ void window_size_callback(GLFWwindow* window, int width, int height)
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
-        App::onMouseLMB();
+        App::drawOnGrid();
+}
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+    if (key == GLFW_KEY_SPACE && action == GLFW_RELEASE)
+        App::changeGameMode();
 }
 
 GLFWwindow* App::window;
 Grid App::grid;
 GameStates App::gameState = GameStates::Draw;
+double App::startCycle = 0.0;
 
 void App::start(){
     if (!glfwInit())
@@ -33,17 +39,33 @@ void App::start(){
     glfwSetCursorPosCallback(window, cursor_position_callback);
     glfwSetWindowSizeCallback(window, window_size_callback);
     glfwSetMouseButtonCallback(window, mouse_button_callback);
+    glfwSetKeyCallback(window, key_callback);
     update();
 
     glfwTerminate();
 }
 
 void App::update(){
+    double now, delta, accumulator, lastTime = 0.0;
     while (!glfwWindowShouldClose(window))
-    {
+    { 
+
         glClearColor(BG_C, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         grid.draw();
+        if(gameState == GameStates::Evolution){
+            now = glfwGetTime() - startCycle;
+            delta = now - lastTime;
+            lastTime = now;
+            accumulator += delta;
+            if(accumulator >= GAME_TICK){
+                grid.cycle();
+                accumulator -= GAME_TICK;
+            }
+        }
+        else{
+            lastTime = 0.0;
+        }
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
@@ -60,8 +82,16 @@ void App::onMouseHover(int x, int y){
     grid.setSelected(numX, numY);
 }
 
-void App::onMouseLMB(){
+void App::drawOnGrid(){
     if(gameState == GameStates::Draw){
         grid.select();
     }
+}
+
+void App::changeGameMode(){
+    if(gameState == GameStates::Draw)
+        gameState = GameStates::Evolution;
+    else
+        gameState = GameStates::Draw;
+    startCycle = glfwGetTime();
 }
