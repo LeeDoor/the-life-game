@@ -1,6 +1,7 @@
 #include "grid.hpp"
 #include <GLFW/glfw3.h>
 
+
 Grid::Grid(){
     for(int i = 0; i < GRID_W; ++i) {
         grid[i].fill(0);
@@ -71,10 +72,52 @@ void Grid::select(){
         grid[selectedX][selectedY] = !grid[selectedX][selectedY];
 }
 
+GRID_TYPE(int) Grid::countNeighs(){
+    GRID_TYPE(int) neigs;
+    for(int i = 0; i < GRID_W; ++i)
+        neigs[i].fill(0);
+
+    for(int x = 0; x < GRID_W; ++x) {
+        for(int y = 0; y < GRID_H; ++y) {
+            if(!grid[x][y]) {
+                continue;
+            }
+
+            if(x > 0){
+                ++neigs[x - 1][y];
+                if(y > 0)
+                    ++neigs[x - 1][y - 1];
+                if(y < GRID_H - 1)
+                    ++neigs[x - 1][y + 1];
+            }
+            if(x < GRID_W - 1){
+                ++neigs[x + 1][y];
+                if(y > 0)
+                    ++neigs[x + 1][y - 1];
+                if(y < GRID_H - 1)
+                    ++neigs[x + 1][y + 1];
+            }
+            if(y > 0)
+                ++neigs[x][y - 1];
+            if(y < GRID_H - 1)
+                ++neigs[x][y + 1];
+        }
+    }
+    return neigs;
+}
+
 bool Grid::cycle(){
+    auto neigs = countNeighs();
     for(int x = 0; x < GRID_W; ++x){
         for(int y = 0; y < GRID_H; ++y){
-            grid[x][y] = !grid[x][y];
+            if(grid[x][y]){
+                if(neigs[x][y] < 2 || neigs[x][y] > 3)
+                    grid[x][y] = false;
+            }
+            else
+                if(neigs[x][y] == 3)
+                    grid[x][y] = true;
+
         }
     }
     return true;
