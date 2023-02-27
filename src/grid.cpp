@@ -3,9 +3,7 @@
 
 
 Grid::Grid(){
-    for(int i = 0; i < GRID_W; ++i) {
-        grid[i].fill(0);
-    }
+    clear();
 }
 
 
@@ -107,6 +105,8 @@ GRID_TYPE(int) Grid::countNeighs(){
 }
 
 bool Grid::cycle(){
+    selectedX = UNSELECTED;
+    selectedY = UNSELECTED;
     auto neigs = countNeighs();
     for(int x = 0; x < GRID_W; ++x){
         for(int y = 0; y < GRID_H; ++y){
@@ -121,4 +121,10 @@ bool Grid::cycle(){
         }
     }
     return true;
+}
+
+void Grid::clear(){
+    for(int i = 0; i < GRID_W; ++i) {
+        grid[i].fill(0);
+    }
 }

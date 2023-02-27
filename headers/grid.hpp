@@ -21,4 +21,5 @@ public:
     void select();
     void setSelected(int x, int y);
     bool cycle();
+    void clear();
 };

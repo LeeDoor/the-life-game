@@ -17,4 +17,5 @@ public:
     static void onMouseHover(int x, int y);
     static void drawOnGrid();
     static void changeGameMode();
+    static void clearGrid();
 };

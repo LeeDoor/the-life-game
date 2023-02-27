@@ -18,6 +18,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 {
     if (key == GLFW_KEY_SPACE && action == GLFW_RELEASE)
         App::changeGameMode();
+    if (key == GLFW_KEY_C && action == GLFW_RELEASE)
+        App::clearGrid();
 }
 
 GLFWwindow* App::window;
@@ -94,4 +96,9 @@ void App::changeGameMode(){
     else
         gameState = GameStates::Draw;
     startCycle = glfwGetTime();
+}
+
+void App::clearGrid(){
+    grid.clear();
+    gameState = GameStates::Draw;
 }
