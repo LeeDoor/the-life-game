@@ -10,8 +10,9 @@ private:
     static Grid grid;
     static GameStates gameState;
 
-    static void Update();
+    static void update();
 public:
-    static void Start();
+    static void start();
     static void onMouseHover(int x, int y);
+    static void onMouseLMB();
 };

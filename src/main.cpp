@@ -3,5 +3,5 @@
 int main(void)
 {
     App app;
-    app.Start();
+    app.start();
 }

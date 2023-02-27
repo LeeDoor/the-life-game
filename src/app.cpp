@@ -9,12 +9,17 @@ void window_size_callback(GLFWwindow* window, int width, int height)
 {
     glViewport(0, 0, width, height);
 }
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
+{
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
+        App::onMouseLMB();
+}
 
 GLFWwindow* App::window;
 Grid App::grid;
 GameStates App::gameState = GameStates::Draw;
 
-void App::Start(){
+void App::start(){
     if (!glfwInit())
         return;
 
@@ -27,12 +32,13 @@ void App::Start(){
     glfwMakeContextCurrent(window);
     glfwSetCursorPosCallback(window, cursor_position_callback);
     glfwSetWindowSizeCallback(window, window_size_callback);
-    Update();
+    glfwSetMouseButtonCallback(window, mouse_button_callback);
+    update();
 
     glfwTerminate();
 }
 
-void App::Update(){
+void App::update(){
     while (!glfwWindowShouldClose(window))
     {
         glClearColor(BG_C, 1.0f);
@@ -52,4 +58,10 @@ void App::onMouseHover(int x, int y){
     int numY = GRID_H - y / (h / (float)GRID_H);
 
     grid.setSelected(numX, numY);
+}
+
+void App::onMouseLMB(){
+    if(gameState == GameStates::Draw){
+        grid.select();
+    }
 }

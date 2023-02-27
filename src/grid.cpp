@@ -51,7 +51,7 @@ void Grid::setSelected(int x, int y) {
 }
 
 void Grid::drawSelected() {
-    if(selectedX == -1)
+    if(selectedX == UNSELECTED)
         return;
     glBegin(GL_LINE_LOOP);
 
@@ -64,4 +64,9 @@ void Grid::drawSelected() {
     glVertex2f(cellSize * selectedX, cellSize * selectedY + cellSize);
 
     glEnd();
+}
+
+void Grid::select(){
+    if(selectedX != UNSELECTED)
+        grid[selectedX][selectedY] = !grid[selectedX][selectedY];
 }
